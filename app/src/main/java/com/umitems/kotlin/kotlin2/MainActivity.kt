@@ -14,7 +14,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     var random: Random = Random()
-    val MAX_ITEMS = 100
+    val MAX_ITEMS = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,11 +98,12 @@ class MainActivity : AppCompatActivity() {
                         mItems[k + 1] = tmp
                         mRecyclerView.adapter.notifyItemChanged(k)
                         mRecyclerView.adapter.notifyItemChanged(k+1)
+
                     }
                     k++
                 }
-                mRecyclerView.adapter.notifyItemChanged(k)
-                mRecyclerView.adapter.notifyItemChanged(k+1)
+                //mRecyclerView.adapter.notifyItemChanged(k)
+                //mRecyclerView.adapter.notifyItemChanged(k+1)
 
             }, (500).toLong())
 

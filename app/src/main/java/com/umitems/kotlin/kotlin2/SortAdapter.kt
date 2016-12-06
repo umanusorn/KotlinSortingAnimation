@@ -6,14 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import java.util.*
+
+
 
 /**
  * Created by umitems on 10/14/16.
  */
 class SortAdapter (items: ArrayList<Int>, context: Context?): RecyclerView.Adapter<SortAdapter.ViewHolder>() {
-
+    val mContext=context
+    private var lastPosition = -1
     private var mItems: ArrayList<Int>? =items
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -23,17 +27,27 @@ class SortAdapter (items: ArrayList<Int>, context: Context?): RecyclerView.Adapt
            bar = itemView.findViewById(R.id.barBg) as ImageView
             rootView = itemView
         }
+
     }
 
     //class ViewHolder(var mTextView: TextView) : RecyclerView.ViewHolder(mTextView)
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         Log.d("chkAdapter","onBindViewHolder")
-        holder!!.bar.layoutParams.height= mItems!![position]*5
-        holder!!.bar.layoutParams.width= 12
-        holder!!.rootView.layoutParams.width=12
-
+        holder!!.bar.layoutParams.height= mItems!![position]*50
+        holder!!.bar.layoutParams.width= 48
+        holder!!.rootView.layoutParams.width=48
+        //setAnimation(holder.rootView, position)
     }
 
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        //http://stackoverflow.com/questions/26724964/how-to-animate-recyclerview-items-when-they-appear
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition) {
+            val animation = AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left)
+            viewToAnimate.startAnimation(animation)
+            lastPosition = position
+        }
+    }
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         //Log.d("gotData", mItems.toString())
         Log.d("chkAdapter","onCreateViewHolder")
@@ -45,11 +59,12 @@ class SortAdapter (items: ArrayList<Int>, context: Context?): RecyclerView.Adapt
         return mItems!!.size
     }
 
+
+
     fun onMove(recyclerView: RecyclerView, firstPos: Int, secondPos: Int) {
         /*Do your stuff what you want
           Notify your adapter about change in positions using notifyItemMoved method
           Shift element e.g. insertion sort*/
-        var tmp = mItems!![firstPos]
     }
 
     fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
