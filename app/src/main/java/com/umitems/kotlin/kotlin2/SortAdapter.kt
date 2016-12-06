@@ -2,6 +2,7 @@ package com.umitems.kotlin.kotlin2
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,16 +24,19 @@ class SortAdapter (items: ArrayList<Int>, context: Context?): RecyclerView.Adapt
             rootView = itemView
         }
     }
+
     //class ViewHolder(var mTextView: TextView) : RecyclerView.ViewHolder(mTextView)
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder!!.bar.layoutParams.height= mItems!![position]
-        holder!!.bar.layoutParams.width= 8
-        holder!!.rootView.layoutParams.width=8
+        Log.d("chkAdapter","onBindViewHolder")
+        holder!!.bar.layoutParams.height= mItems!![position]*5
+        holder!!.bar.layoutParams.width= 12
+        holder!!.rootView.layoutParams.width=12
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         //Log.d("gotData", mItems.toString())
+        Log.d("chkAdapter","onCreateViewHolder")
         val v = LayoutInflater.from(parent!!.getContext()).inflate(R.layout.mother_bar, parent, false)
         return ViewHolder(v)
     }

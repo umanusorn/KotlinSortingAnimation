@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.umitems.kotlin.kotlin2"
         minSdkVersion 21

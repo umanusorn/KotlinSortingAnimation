@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
             btnSort.text = SORT_TEXT
         }
 
-
         btnSort.text = SORT_TEXT
         btnSort.startAnimation(shakeAnim)
 
@@ -50,9 +49,7 @@ class MainActivity : AppCompatActivity() {
             it.text = SORTED_TEXT
 
             System.out.println("Before: " + array1)
-            array1 = bubbleSort(array1, mRecyclerView)
-            System.out.println("After:  " + array1)
-            mRecyclerView.adapter = SortAdapter(array1, this)
+            bubbleSort(array1, mRecyclerView)
         }
     }
 
@@ -86,32 +83,38 @@ class MainActivity : AppCompatActivity() {
         return array
     }
 
-    fun bubbleSort(a: ArrayList<Int>, mRecyclerView: RecyclerView): ArrayList<Int> {
+    fun bubbleSort(mItems: ArrayList<Int>, mRecyclerView: RecyclerView): ArrayList<Int> {
         val handler1 = Handler()
-        mRecyclerView.adapter = SortAdapter(a, this)
+        mRecyclerView.adapter = SortAdapter(mItems, this)
         var i = 0
         var k = 0
-        while (i < a.size) {
+        while (i < mItems.size) {
             k = 0
             handler1.postDelayed({
-                while (k < a.size - 1) {
-                    if (a[k] < a[k + 1]) {
-                        val tmp = a[k]
-                        a[k] = a[k + 1]
-                        a[k + 1] = tmp
+                while (k < mItems.size - 1) {
+                    if (mItems[k] < mItems[k + 1]) {
+                        val tmp = mItems[k]
+                        mItems[k] = mItems[k + 1]
+                        mItems[k + 1] = tmp
+                        /*mRecyclerView.adapter=null
+                        mRecyclerView.adapter = SortAdapter(mItems, this)
                         mRecyclerView.adapter.notifyItemChanged(k)
-                        mRecyclerView.adapter.notifyItemChanged(k+1)
+                        mRecyclerView.adapter.notifyItemChanged(k+1)*/
                     }
                     k++
                 }
-            mRecyclerView.adapter = SortAdapter(a, this)
-            }, (100*i).toLong())
+                mRecyclerView.adapter=null
+                mRecyclerView.adapter = SortAdapter(mItems, this)
+                mRecyclerView.adapter.notifyItemChanged(k)
+                mRecyclerView.adapter.notifyItemChanged(k+1)
 
-            //mRecyclerView.adapter = SortAdapter(a, this)
+            }, (500).toLong())
+
+            //mRecyclerView.adapter = SortAdapter(mItems, this)
             i++
         }
-        //mRecyclerView.adapter = SortAdapter(a, this)
-        return a.let { intList ->
+        //mRecyclerView.adapter = SortAdapter(mItems, this)
+        return mItems.let { intList ->
             ArrayList<Int>(intList.size).apply { intList.forEach { add(it) } }
         }
     }
