@@ -4,7 +4,7 @@ package com.umitems.kotlin.kotlin2
  * Created by umanusorn on 12/4/2016 AD.
  */
 
-class g {
+class TestConvertJava2Kotlin {
 
     /*internal fun main() {
         val all = arrayOf<ImageButton>(btn1, btn2, btn3, btn4)
