@@ -93,19 +93,20 @@ class MainActivity : AppCompatActivity() {
             val delay = 1000
             handler1.postDelayed({
                 while (k < mItems.size - 1) {
+                    Log.d("chkDelay", "k=" + k)
                     if (mItems[k] < mItems[k + 1]) {
                         val tmp = mItems[k]
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
                         mRecyclerView.adapter.notifyItemChanged(k)
-                        mRecyclerView.adapter.notifyItemChanged(k+1)
+                        mRecyclerView.adapter.notifyItemChanged(k + 1)
                     }
                     k++
                 }
 
-            }, delay*i.toLong())
+            }, delay * i.toLong())
             i++
-            Log.d("chkDelay","i="+i)
+            Log.d("chkDelay", "i=" + i)
         }
         //mRecyclerView.adapter = SortAdapter(mItems, this)
         return mItems.let { intList ->
