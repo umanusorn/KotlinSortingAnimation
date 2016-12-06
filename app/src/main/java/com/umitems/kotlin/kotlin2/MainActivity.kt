@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         var k = 0
         while (i < mItems.size) {
             k = 0
+            val delay = 1000
             handler1.postDelayed({
                 while (k < mItems.size - 1) {
                     if (mItems[k] < mItems[k + 1]) {
@@ -98,17 +99,13 @@ class MainActivity : AppCompatActivity() {
                         mItems[k + 1] = tmp
                         mRecyclerView.adapter.notifyItemChanged(k)
                         mRecyclerView.adapter.notifyItemChanged(k+1)
-
                     }
                     k++
                 }
-                //mRecyclerView.adapter.notifyItemChanged(k)
-                //mRecyclerView.adapter.notifyItemChanged(k+1)
 
-            }, (500).toLong())
-
-            //mRecyclerView.adapter = SortAdapter(mItems, this)
+            }, delay*i.toLong())
             i++
+            Log.d("chkDelay","i="+i)
         }
         //mRecyclerView.adapter = SortAdapter(mItems, this)
         return mItems.let { intList ->

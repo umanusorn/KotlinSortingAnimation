@@ -19,24 +19,22 @@ class SortAdapter (items: ArrayList<Int>, context: Context?): RecyclerView.Adapt
     val mContext=context
     private var lastPosition = -1
     private var mItems: ArrayList<Int>? =items
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal var bar: ImageView
         internal var rootView: View
         init {
            bar = itemView.findViewById(R.id.barBg) as ImageView
             rootView = itemView
         }
-
     }
 
-    //class ViewHolder(var mTextView: TextView) : RecyclerView.ViewHolder(mTextView)
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         Log.d("chkAdapter","onBindViewHolder")
         holder!!.bar.layoutParams.height= mItems!![position]*50
         holder!!.bar.layoutParams.width= 48
         holder!!.rootView.layoutParams.width=48
-        //setAnimation(holder.rootView, position)
+        //setAnimation(holder.bar, position)
     }
 
     private fun setAnimation(viewToAnimate: View, position: Int) {
@@ -65,6 +63,7 @@ class SortAdapter (items: ArrayList<Int>, context: Context?): RecyclerView.Adapt
         /*Do your stuff what you want
           Notify your adapter about change in positions using notifyItemMoved method
           Shift element e.g. insertion sort*/
+       // setAnimation(recyclerView.findViewHolderForAdapterPosition(firstPos).itemView,secondPos)
     }
 
     fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
