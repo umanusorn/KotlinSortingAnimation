@@ -4,6 +4,4 @@ This project aims to practice Kotlin. The project will do sorting on Android wit
 
 https://www.youtube.com/watch?v=kPRA0W1kECg
 
-My idea is to use recyclerView create bars represent the value of data. I have add an handler to delay the change on each swap data.
-
-However, I found a difficulty on update the adapter while sorting.
+My idea is to use recyclerView create bars represent the value of data. I have add an handler to delay the change on each swap data.However, It doesn't work as I expected. User still need to press sortBtn to continue sort.
