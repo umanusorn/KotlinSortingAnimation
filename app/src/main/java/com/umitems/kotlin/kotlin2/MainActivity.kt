@@ -96,15 +96,11 @@ class MainActivity : AppCompatActivity() {
                         val tmp = mItems[k]
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
-                        /*mRecyclerView.adapter=null
-                        mRecyclerView.adapter = SortAdapter(mItems, this)
                         mRecyclerView.adapter.notifyItemChanged(k)
-                        mRecyclerView.adapter.notifyItemChanged(k+1)*/
+                        mRecyclerView.adapter.notifyItemChanged(k+1)
                     }
                     k++
                 }
-                mRecyclerView.adapter=null
-                mRecyclerView.adapter = SortAdapter(mItems, this)
                 mRecyclerView.adapter.notifyItemChanged(k)
                 mRecyclerView.adapter.notifyItemChanged(k+1)
 
