@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         var data = initRandomArray(MAX_ITEMS, MAX_ITEMS)
+        random.setSeed(Math.random().toLong())//change random seed?
         val shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake)
 
         var mRecyclerView = setupRecyclerView(data, R.id.recyclerView)
@@ -93,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             i++
         }
         Log.d("New dataset:", array.toString())
-        random.setSeed(Math.random().toLong())//change random seed?
+
         return array
     }
 
