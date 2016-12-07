@@ -10,12 +10,15 @@ import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import java.lang.Thread.sleep
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     var random: Random = Random()
     val MAX_ITEMS = 20
-
+    val SORT_TEXT = "Sort"
+    val SORTED_TEXT = "Sorted"
+    val SORTING_TEXT = "Sorting"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,28 +31,30 @@ class MainActivity : AppCompatActivity() {
         setupBtns(data, mRecyclerView, shakeAnim)
     }
 
-    private fun setupBtns(array: ArrayList<Int>, mRecyclerView: RecyclerView, shakeAnim: Animation?) {
-        var array1 = array
-        var btnRandom = findViewById(R.id.btnRandom) as Button
-        var btnSort = findViewById(R.id.btnSorting) as Button
-        val SORT_TEXT = "Sort"
-        val SORTED_TEXT = "Sorted"
-
-        btnRandom.setOnClickListener {
-            array1 = initRandomArray(MAX_ITEMS, MAX_ITEMS)
-            mRecyclerView.adapter = SortAdapter(array1, this)
-            btnSort.text = SORT_TEXT
+    private val btnSorting: Button
+        get() {
+            var btnSort = findViewById(R.id.btnSorting) as Button
+            return btnSort
         }
 
+    private fun setupBtns(array: ArrayList<Int>, mRecyclerView: RecyclerView, shakeAnim: Animation?) {
+        var randomData = array
+        var btnRandom = findViewById(R.id.btnRandom) as Button
+        var btnSort = findViewById(R.id.btnSorting) as Button
+
+
+        btnRandom.setOnClickListener {
+            randomData = initRandomArray(MAX_ITEMS, MAX_ITEMS)
+            mRecyclerView.adapter = SortAdapter(randomData, this)
+            btnSort.text = SORT_TEXT
+        }
         btnSort.text = SORT_TEXT
         btnSort.startAnimation(shakeAnim)
-
         btnSort.setOnClickListener {
             it as Button
             it.text = SORTED_TEXT
-
-            System.out.println("Before: " + array1)
-            bubbleSort(array1, mRecyclerView)
+            System.out.println("Before: " + randomData)
+            bubbleSort(randomData, mRecyclerView)
         }
     }
 
@@ -84,31 +89,44 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun bubbleSort(mItems: ArrayList<Int>, mRecyclerView: RecyclerView): ArrayList<Int> {
-        val handler1 = Handler()
+        val handler = Handler()
         mRecyclerView.adapter = SortAdapter(mItems, this)
         var i = 0
         var k = 0
-        while (i < mItems.size) {
-            k = 0
-            val delay = 1000
-            handler1.postDelayed({
+        val delay = 200
+        btnSorting.text=SORTING_TEXT
+        val thread = Thread {
+            while (i < mItems.size) {
+                k = 0
                 while (k < mItems.size - 1) {
                     Log.d("chkDelay", "k=" + k)
                     if (mItems[k] < mItems[k + 1]) {
                         val tmp = mItems[k]
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
-                        mRecyclerView.adapter.notifyItemChanged(k)
-                        mRecyclerView.adapter.notifyItemChanged(k + 1)
+                        runOnUiThread {
+                            //todo measure and add more delay for ui to render the screen
+                            mRecyclerView.adapter.notifyItemChanged(k)
+                            mRecyclerView.adapter.notifyItemChanged(k + 1)
+                        }
+                        sleep(delay.toLong())
                     }
                     k++
                 }
-
-            }, delay * i.toLong())
-            i++
-            Log.d("chkDelay", "i=" + i)
+                i++
+                Log.d("chkDelay", "i=" + i)
+            }
+            /**
+             * on sorted
+             * need to update the ui the the latest state since if the delay is too fast. The device cannot render ui in time.
+             */
+            runOnUiThread {
+                mRecyclerView.adapter.notifyDataSetChanged()
+           btnSorting.text=SORTED_TEXT
+            }
         }
-        //mRecyclerView.adapter = SortAdapter(mItems, this)
+        thread.start()
+
         return mItems.let { intList ->
             ArrayList<Int>(intList.size).apply { intList.forEach { add(it) } }
         }

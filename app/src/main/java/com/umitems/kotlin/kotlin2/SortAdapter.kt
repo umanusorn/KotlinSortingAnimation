@@ -31,9 +31,9 @@ class SortAdapter(items: ArrayList<Int>, context: Context?) : RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         Log.d("chkAdapter", "onBindViewHolder")
-        holder!!.bar.layoutParams.height = mItems!![position] * 50
-        holder!!.bar.layoutParams.width = 48
-        holder!!.rootView.layoutParams.width = 48
+        holder!!.bar.layoutParams.height = mItems!![position] * 30
+        holder!!.bar.layoutParams.width = 36
+        holder!!.rootView.layoutParams.width = 36
         //setAnimation(holder.bar, position)
     }
 
