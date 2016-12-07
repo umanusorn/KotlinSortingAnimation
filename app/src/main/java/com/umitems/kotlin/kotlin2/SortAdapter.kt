@@ -2,7 +2,6 @@ package com.umitems.kotlin.kotlin2
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,6 @@ class SortAdapter(items: ArrayList<Int>, context: Context?) : RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        Log.d("chkAdapter", "onBindViewHolder")
         holder!!.bar.layoutParams.height = mItems!![position] * 30
         holder!!.bar.layoutParams.width = 36
         holder!!.rootView.layoutParams.width = 36
@@ -48,8 +46,6 @@ class SortAdapter(items: ArrayList<Int>, context: Context?) : RecyclerView.Adapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        //Log.d("gotData", mItems.toString())
-        Log.d("chkAdapter", "onCreateViewHolder")
         val v = LayoutInflater.from(parent!!.getContext()).inflate(R.layout.mother_bar, parent, false)
         return ViewHolder(v)
     }
@@ -57,7 +53,6 @@ class SortAdapter(items: ArrayList<Int>, context: Context?) : RecyclerView.Adapt
     override fun getItemCount(): Int {
         return mItems!!.size
     }
-
 
     fun onMove(recyclerView: RecyclerView, firstPos: Int, secondPos: Int) {
         /*Do your stuff what you want

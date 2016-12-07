@@ -1,7 +1,6 @@
 package com.umitems.kotlin.kotlin2
 
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,6 +9,7 @@ import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.SeekBar
 import java.lang.Thread.sleep
 import java.util.*
 
@@ -24,24 +24,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         var data = initRandomArray(MAX_ITEMS, MAX_ITEMS)
-        random.setSeed(Math.random().toLong())
         val shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake)
 
         var mRecyclerView = setupRecyclerView(data, R.id.recyclerView)
         setupBtns(data, mRecyclerView, shakeAnim)
+
     }
 
-    private val btnSorting: Button
+    private val seekBar:SeekBar
+    get(){
+        var seekBar = findViewById(R.id.seekBar)as SeekBar
+        return seekBar
+    }
+
+    private val btnSort: Button
         get() {
-            var btnSort = findViewById(R.id.btnSorting) as Button
+            var btnSort = findViewById(R.id.btnSort) as Button
             return btnSort
         }
 
     private fun setupBtns(array: ArrayList<Int>, mRecyclerView: RecyclerView, shakeAnim: Animation?) {
         var randomData = array
         var btnRandom = findViewById(R.id.btnRandom) as Button
-        var btnSort = findViewById(R.id.btnSorting) as Button
-
 
         btnRandom.setOnClickListener {
             randomData = initRandomArray(MAX_ITEMS, MAX_ITEMS)
@@ -85,16 +89,22 @@ class MainActivity : AppCompatActivity() {
             i++
         }
         Log.d("New dataset:", array.toString())
+        random.setSeed(Math.random().toLong())//change random seed?
         return array
     }
 
+    fun getDelay(): Long {
+        var delay = Math.abs(1000-(seekBar.progress*9.9))
+
+        return delay.toLong()
+    }
+
     fun bubbleSort(mItems: ArrayList<Int>, mRecyclerView: RecyclerView): ArrayList<Int> {
-        val handler = Handler()
         mRecyclerView.adapter = SortAdapter(mItems, this)
         var i = 0
         var k = 0
-        val delay = 200
-        btnSorting.text=SORTING_TEXT
+
+        btnSort.text=SORTING_TEXT
         val thread = Thread {
             while (i < mItems.size) {
                 k = 0
@@ -109,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                             mRecyclerView.adapter.notifyItemChanged(k)
                             mRecyclerView.adapter.notifyItemChanged(k + 1)
                         }
-                        sleep(delay.toLong())
+                        sleep(getDelay())
                     }
                     k++
                 }
@@ -122,7 +132,7 @@ class MainActivity : AppCompatActivity() {
              */
             runOnUiThread {
                 mRecyclerView.adapter.notifyDataSetChanged()
-           btnSorting.text=SORTED_TEXT
+           btnSort.text=SORTED_TEXT
             }
         }
         thread.start()
