@@ -107,13 +107,13 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.adapter = SortAdapter(mItems, this)
         var i = 0
         var k = 0
-
+        //todo How to bring back step while sorting? Or just let user choose to auto sort or steping sort
+        //todo add specific color the swap,access,mem
         btnSort.text=SORTING_TEXT
         val thread = Thread {
             while (i < mItems.size) {
                 k = 0
                 while (k < mItems.size - 1) {
-                    Log.d("chkDelay", "k=" + k)
                     if (mItems[k] < mItems[k + 1]) {
                         val tmp = mItems[k]
                         mItems[k] = mItems[k + 1]
@@ -128,7 +128,6 @@ class MainActivity : AppCompatActivity() {
                     k++
                 }
                 i++
-                Log.d("chkDelay", "i=" + i)
             }
             /**
              * on sorted
