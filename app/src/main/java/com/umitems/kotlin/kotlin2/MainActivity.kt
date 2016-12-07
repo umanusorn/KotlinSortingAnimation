@@ -15,7 +15,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     var random: Random = Random()
-    val MAX_ITEMS = 20
+    val MAX_ITEMS = 29
     val SORT_TEXT = "Sort"
     val SORTED_TEXT = "Sorted"
     val SORTING_TEXT = "Sorting"
@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         setupBtns(data, mRecyclerView, shakeAnim)
 
     }
+
+    //todo add functionality to adjust quantity of random data
+    //todo may need to hide seekBarQuantity when sorting. Its gonna be hard/fun to sorting and adjusting quantity of data
+    //todo dataBinding with txtCount access,swap etc...
 
     private val seekBar:SeekBar
     get(){
