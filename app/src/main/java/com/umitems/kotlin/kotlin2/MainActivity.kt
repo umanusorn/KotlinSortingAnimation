@@ -97,9 +97,9 @@ class MainActivity : AppCompatActivity() {
         return array
     }
 
+    //todo save delay in primitive var and update it only when seekbar is changing to avoid crash
     fun getDelay(): Long {
         var delay = Math.abs(1000-(seekBar.progress*9.9))
-
         return delay.toLong()
     }
 
