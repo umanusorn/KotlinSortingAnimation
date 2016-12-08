@@ -8,7 +8,7 @@ android {
         enabled = true
     }
     defaultConfig {
-        applicationId "com.umitems.kotlin.kotlin2"
+        applicationId "com.umitems.kotlin.sorting"
         minSdkVersion 21
         targetSdkVersion 24
         versionCode 1

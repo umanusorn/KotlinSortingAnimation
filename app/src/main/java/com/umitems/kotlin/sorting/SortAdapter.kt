@@ -1,4 +1,4 @@
-package com.umitems.kotlin.kotlin2
+package com.umitems.kotlin.sorting
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView

@@ -1,4 +1,4 @@
-package com.umitems.kotlin.kotlin2
+package com.umitems.kotlin.sorting
 
 /**
  * Created by umanusorn on 12/4/2016 AD.

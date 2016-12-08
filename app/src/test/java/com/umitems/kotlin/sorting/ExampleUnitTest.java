@@ -1,4 +1,4 @@
-package com.umitems.kotlin.kotlin2;
+package com.umitems.kotlin.sorting;
 
 import org.junit.Test;
 

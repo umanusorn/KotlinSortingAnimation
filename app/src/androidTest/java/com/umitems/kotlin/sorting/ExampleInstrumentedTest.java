@@ -1,4 +1,4 @@
-package com.umitems.kotlin.kotlin2;
+package com.umitems.kotlin.sorting;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.umitems.kotlin.kotlin2", appContext.getPackageName());
+        assertEquals("com.umitems.kotlin.sorting", appContext.getPackageName());
     }
 }

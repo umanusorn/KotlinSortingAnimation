@@ -1,4 +1,4 @@
-package com.umitems.kotlin.kotlin2
+package com.umitems.kotlin.sorting
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
