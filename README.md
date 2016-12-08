@@ -6,21 +6,23 @@ https://www.youtube.com/watch?v=kPRA0W1kECg
 
 My idea is to compare the sorting and how each sort behave.
 
-So in the end I plan to.
+**I plan to.**
  0. Add automate testing, crashlytic etc.
- 1. User can generate dummy data
- 2. User can choose sorting algor
+ 1. User can generate dummy data with a different characteristic.
+ 2. User can choose sorting algor.
  3. There will be bubble, selection, insertion sort and the other sort will added later.
- 4. Show up to 6 sorting run simultaneously to compare
+ 4. Show up to 2 sorting run simultaneously to compare
  5. Summarize each sorting after run
+ 6. Publish to PlayStore
 
- Future
- 6. Add sound when sorting
- 7. Record screen when sorting and share to social
- 8. Add explanation for each sort (kind of education)
- 9. Link to some learning resource about sorting
- 10. Embedded ads
- 11. Create a blog for this project
+ **Future**
+ 1. Add sound when sorting
+ 2. Record screen when sorting and share to social
+ 3. Add explanation for each sort (kind of education)
+ 4. Link to some learning resource about sorting
+ 5. Embedded ads
+ 6. Create a blog for this project
+ 7. Show up to 4 sorting run simultaneously to compare
 
  Welcome for the suggestion on my code.
 
