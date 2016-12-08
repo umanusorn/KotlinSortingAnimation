@@ -40,8 +40,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     //todo may need to hide seekBarQuantity when sorting. Its gonna be hard/fun to sorting and adjusting quantity of data
-    //todo dataBinding with txtCount access,swap etc...
-
     private val mRecyclerView: RecyclerView
         get() {
             var mRecyclerView = setupRecyclerView(randomData, R.id.recyclerView)
@@ -70,7 +68,6 @@ class MainActivity : AppCompatActivity() {
                         randomDataNUpdateUi(mRecyclerView)
                         maxItems = progress
                     }
-
                 }
             })
             return seekBar
@@ -121,6 +118,13 @@ class MainActivity : AppCompatActivity() {
         randomData = initRandomArray(maxItems, maxItems)
         mRecyclerView.adapter = SortAdapter(maxItems, randomData, this)
         btnSort.text = SORT_TEXT
+
+        tvSwap.text = "0"
+        tvTotal.text="0"
+        tvUiPing.text="0"
+        tvMem.text="0"
+        tvBigO.text="0"
+        tvCmp.text="0"
     }
 
     private fun setupRecyclerView(array: ArrayList<Int>, recyclerViewId: Int): RecyclerView {
@@ -219,6 +223,7 @@ class MainActivity : AppCompatActivity() {
                 tvTotal.text=(cmpCount+swapCount).toString()
                 tvUiPing.text=uiPing.toString()
                 tvMem.text="0"
+                tvCmp.text=cmpCount.toString()
             }
         }
         thread.start()
