@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Thread.sleep
 import java.util.*
 
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        tvData.text=maxItems.toString()
 
         random.setSeed(Math.random().toLong())//change random seed?
         val shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake)
@@ -45,6 +48,12 @@ class MainActivity : AppCompatActivity() {
             return mRecyclerView
         }
 
+    private val tvData: TextView
+    get() {
+        var tvData = findViewById(R.id.tvData)as TextView
+        return tvData
+    }
+
     private val seekBarQuantity: SeekBar
         get() {
             var seekBar = findViewById(R.id.seekBarQuantity) as SeekBar
@@ -57,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     if (progress > 0) {
+                        tvData.text=maxItems.toString()
                         randomDataNUpdateUi(mRecyclerView)
                         maxItems = progress
                     }
@@ -108,7 +118,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun randomDataNUpdateUi(mRecyclerView: RecyclerView) {
-
         randomData = initRandomArray(maxItems, maxItems)
         mRecyclerView.adapter = SortAdapter(maxItems, randomData, this)
         btnSort.text = SORT_TEXT
@@ -154,6 +163,11 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.adapter = SortAdapter(maxItems, mItems, this)
         var i = 0
         var k = 0
+        var cmpCount=0
+        var swapCount=0
+        var uiPing=0.toLong()
+
+        tvBigO.text="n^2"
         //todo How to bring back step while sorting? Or just let user choose to auto sort or steping sort
         //todo add specific color the swap,access,mem
         btnSort.text = SORTING_TEXT
@@ -161,21 +175,35 @@ class MainActivity : AppCompatActivity() {
             while (i < mItems.size) {
                 k = 0
                 while (k < mItems.size - 1) {
+                    var timeDiff=0.toLong()
+                    cmpCount+=2
+                    runOnUiThread {
+                        tvTotal.text=(cmpCount+swapCount).toString()
+                        tvCmp.text=cmpCount.toString()
+                        tvMem.text="0"
+                    }
                     if (mItems[k] < mItems[k + 1]) {
                         val tmp = mItems[k]
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
-                        var timeDiff=0.toLong()
+                        swapCount++
                         runOnUiThread {
                             //todo measure and add more delay for ui to render the screen
+
                             var calendar = Calendar.getInstance()
                             mRecyclerView.adapter.notifyItemChanged(k)
                             mRecyclerView.adapter.notifyItemChanged(k + 1)
                             var calendar2 = Calendar.getInstance()
+                            tvSwap.text = swapCount.toString()
+                            tvMem.text="1"
                             timeDiff = calendar2.timeInMillis-calendar.timeInMillis
+                            if(timeDiff>0){
+                                uiPing+=timeDiff
+                                tvUiPing.text=uiPing.toString()
+                            }
                         }
-                        sleep(delay+timeDiff)
                     }
+                    sleep(delay+timeDiff)
                     k++
                 }
                 i++
@@ -187,6 +215,10 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 mRecyclerView.adapter.notifyDataSetChanged()
                 btnSort.text = SORTED_TEXT
+                tvSwap.text = swapCount.toString()
+                tvTotal.text=(cmpCount+swapCount).toString()
+                tvUiPing.text=uiPing.toString()
+                tvMem.text="0"
             }
         }
         thread.start()

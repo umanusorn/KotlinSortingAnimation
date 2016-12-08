@@ -1,230 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.umitems.kotlin.kotlin2.MainActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintRight_creator="1"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/gridLayout"
-        android:layout_marginBottom="8dp"
-        android:layout_height="0dp"/>
-
-    <Button
-        android:id="@+id/btnRandom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Random"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnSort"
-        tools:layout_constraintBaseline_creator="1"
-        app:layout_constraintRight_toLeftOf="@+id/btnSort"
-        android:layout_marginEnd="8dp"/>
-
-    <Button
-        android:id="@+id/btnSort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Sorting"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_constraintBottom_creator="1"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"/>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Step"
-        app:layout_constraintBottom_toBottomOf="@+id/btnSort"
-        app:layout_constraintTop_toTopOf="@+id/btnSort"
-        android:layout_marginStart="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/btnSort"
-        app:layout_constraintVertical_bias="0.0"/>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/layoutSpeed"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btnSort"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="8dp"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.umitems.kotlin.kotlin2.MainActivity">
 
-        <SeekBar
-            android:id="@+id/seekBarSpeed"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="35dp"
-            android:max="100"
-            android:progress="50"
-            app:layout_constraintHorizontal_bias="1.0"
-
-            app:layout_constraintTop_toTopOf="@+id/tvFast"
-            app:layout_constraintVertical_bias="0.42000002"
-            tools:layout_constraintRight_creator="1"
-            android:layout_marginStart="31dp"
-            app:layout_constraintRight_toRightOf="@+id/tvFast"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/gridLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:layout_constraintLeft_creator="1"
-            app:layout_constraintLeft_toLeftOf="@+id/tvSlow"/>
+            tools:layout_constraintRight_creator="1"/>
 
-        <TextView
-            android:id="@+id/tvSlow"
+        <Button
+            android:id="@+id/btnRandom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Random"
+            app:layout_constraintBaseline_toBaselineOf="@+id/btnSort"
+            app:layout_constraintRight_toLeftOf="@+id/btnSort"
+            tools:layout_constraintBaseline_creator="1"/>
+
+        <Button
+            android:id="@+id/btnSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:text="Slow"
+            android:text="Sorting"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/seekBarSpeed"/>
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_constraintBottom_creator="1"/>
 
-        <TextView
-            android:id="@+id/tvFast"
+        <Button
+            android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fast"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            android:layout_marginEnd="16dp"/>
-    </android.support.constraint.ConstraintLayout>
+            android:layout_marginStart="8dp"
+            android:text="Step"
+            app:layout_constraintBottom_toBottomOf="@+id/btnSort"
+            app:layout_constraintLeft_toRightOf="@+id/btnSort"
+            app:layout_constraintTop_toTopOf="@+id/btnSort"
+            app:layout_constraintVertical_bias="0.0"/>
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/layoutSpeed"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        android:id="@+id/layoutQuantity">
-
-        <SeekBar
-            android:id="@+id/seekBarQuantity"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layoutSpeed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:max="100"
-            android:progress="50"
-            app:layout_constraintHorizontal_bias="1.0"
-
-            app:layout_constraintLeft_toRightOf="@+id/tvLess"
-            app:layout_constraintRight_toLeftOf="@+id/tvMore"
-            app:layout_constraintTop_toTopOf="@+id/tvMore"
-            app:layout_constraintVertical_bias="0.42000002"
-            tools:layout_constraintRight_creator="1"
-            tools:layout_constraintLeft_creator="1"/>
-
-        <TextView
-            android:id="@+id/tvLess"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Less"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnSort"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/seekBarQuantity"/>
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1">
 
-        <TextView
-            android:id="@+id/tvMore"
-            android:layout_width="wrap_content"
+            <SeekBar
+                android:id="@+id/seekBarSpeed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="35dp"
+                android:layout_marginStart="31dp"
+                android:max="100"
+                android:progress="50"
+
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintLeft_toLeftOf="@+id/tvSlow"
+                app:layout_constraintRight_toRightOf="@+id/tvFast"
+                app:layout_constraintTop_toTopOf="@+id/tvFast"
+                app:layout_constraintVertical_bias="0.42000002"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintRight_creator="1"/>
+
+            <TextView
+                android:id="@+id/tvSlow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Slow"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/seekBarSpeed"/>
+
+            <TextView
+                android:id="@+id/tvFast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Fast"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"/>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layoutQuantity"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="More"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/layoutSpeed"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1">
+
+            <SeekBar
+                android:id="@+id/seekBarQuantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:max="100"
+                android:progress="50"
+                app:layout_constraintHorizontal_bias="1.0"
+
+                app:layout_constraintLeft_toRightOf="@+id/tvLess"
+                app:layout_constraintRight_toLeftOf="@+id/tvMore"
+                app:layout_constraintTop_toTopOf="@+id/tvMore"
+                app:layout_constraintVertical_bias="0.42000002"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintRight_creator="1"/>
+
+            <TextView
+                android:id="@+id/tvLess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Less"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/seekBarQuantity"/>
+
+            <TextView
+                android:id="@+id/tvMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="More"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </android.support.constraint.ConstraintLayout>
+
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/layoutQuantity"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <TextView
+                style="@style/tv_in_grid"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:text="Data"/>
+
+            <TextView
+                style="@style/tv_in_grid"
+                android:layout_row="0"
+                android:text="BigO"/>
+
+            <TextView
+                style="@style/tv_in_grid"
+                android:layout_row="0"
+                android:text="Compare"/>
+
+            <TextView
+                style="@style/tv_in_grid"
+                android:layout_row="0"
+                android:text="Swap"/>
+
+            <TextView
+                style="@style/tv_in_grid"
+                android:layout_row="0"
+                android:text="Total"/>
+
+            <TextView
+                style="@style/tv_in_grid"
+                android:layout_row="0"
+                android:text="Mem"/>
+
+            <TextView
+                style="@style/tv_in_grid"
+                android:layout_row="0"
+                android:text="UiPing"/>
+
+            <TextView
+                android:id="@+id/tvData"
+                style="@style/tv_in_grid"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:text="0"
+                />
+
+            <TextView
+                android:id="@+id/tvBigO"
+                style="@style/tv_in_grid"
+                android:layout_row="1"
+                android:text="0"/>
+
+            <TextView
+                android:id="@+id/tvCmp"
+                style="@style/tv_in_grid"
+                android:text="0"/>
+
+            <TextView
+                android:id="@+id/tvSwap"
+                style="@style/tv_in_grid"
+                android:text="0"/>
+
+            <TextView
+                android:id="@+id/tvTotal"
+                style="@style/tv_in_grid"
+                android:text="0"/>
+
+            <TextView
+                android:id="@+id/tvMem"
+                style="@style/tv_in_grid"
+                android:text="0"/>
+
+            <TextView
+                android:id="@+id/tvUiPing"
+                style="@style/tv_in_grid"
+                android:text="0"/>
+        </GridLayout>
+
     </android.support.constraint.ConstraintLayout>
-
-    <GridLayout
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/layoutQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/gridLayout">
-        <TextView
-            android:text="Data"
-            style="@style/tv_in_grid"
-            android:layout_row="0"
-            android:layout_column="0"/>
-        <TextView
-            android:text="Access"
-            style="@style/tv_in_grid"
-            android:layout_row="0"/>
-        <TextView
-            android:text="Compare"
-            android:layout_row="0"
-            style="@style/tv_in_grid"/>
-        <TextView
-            android:text="Swap"
-            style="@style/tv_in_grid"
-            android:layout_row="0"/>
-        <TextView
-            android:text="Total"
-            style="@style/tv_in_grid"
-            android:layout_row="0"/>
-
-        <TextView
-            android:text="Mem"
-            style="@style/tv_in_grid"
-            android:layout_row="0"/>
-        <TextView
-            android:text="UiPing"
-            style="@style/tv_in_grid"
-            android:layout_row="0"/>
-        <TextView
-            android:text="0"
-            style="@style/tv_in_grid"
-            android:id="@+id/tvData"
-            android:layout_row="1"
-            android:layout_column="0"
-            />
-        <TextView
-            android:text="0"
-            style="@style/tv_in_grid"
-            android:id="@+id/tvAccess"
-            android:layout_row="1"/>
-
-        <TextView
-            android:text="0"
-            style="@style/tv_in_grid"
-            android:id="@+id/tvCmp"/>
-
-        <TextView
-            android:text="0"
-            style="@style/tv_in_grid"
-            android:id="@+id/tvSwap"/>
-
-        <TextView
-            android:text="0"
-            style="@style/tv_in_grid"
-            android:id="@+id/tvTotal"/>
-
-        <TextView
-            android:text="0"
-            style="@style/tv_in_grid"
-            android:id="@+id/tvMem"/>
-        <TextView
-            android:text="0"
-            style="@style/tv_in_grid"
-            android:id="@+id/tvPing"/>
-    </GridLayout>
-
-</android.support.constraint.ConstraintLayout>
