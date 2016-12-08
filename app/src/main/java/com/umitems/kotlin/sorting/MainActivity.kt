@@ -77,7 +77,6 @@ class MainActivity : AppCompatActivity() {
             val callback = RecyclerItemTouchHelper(sortAdapter)
             val helper = ItemTouchHelper(callback)
             helper.attachToRecyclerView(recyclerView)
-            //var mRecyclerView = setupRecyclerView(randomData)
             return recyclerView
         }
 
@@ -102,11 +101,11 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.adapter = SortAdapter(maxItems, randomData, this)
         btnSort.text = SORT_TEXT
         btnSort.isEnabled = true
-        tvSwap.text = "0"
-        tvTotal.text = "0"
         tvUiPing.text = "0"
-        tvMem.text = "0"
+        tvTotal.text = "0"
+        tvSwap.text = "0"
         tvBigO.text = "0"
+        tvMem.text = "0"
         tvCmp.text = "0"
     }
 
