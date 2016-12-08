@@ -11,7 +11,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Thread.sleep
 import java.util.*
@@ -35,59 +34,39 @@ class MainActivity : AppCompatActivity() {
 
         setupBtns(mRecyclerView, shakeAnim)
         delay = getDelayFromSeekBar() // initSeekBar and set delay
-        seekBarQuantity
+        seekBarSpeed.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
 
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                delay = getDelayFromSeekBar()
+            }
+        })
+        seekBarQuantity.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (progress > 0) {
+                    tvData.text=maxItems.toString()
+                    randomDataNUpdateUi(mRecyclerView)
+                    maxItems = progress
+                }
+            }
+        })
     }
 
     //todo may need to hide seekBarQuantity when sorting. Its gonna be hard/fun to sorting and adjusting quantity of data
     private val mRecyclerView: RecyclerView
         get() {
-            var mRecyclerView = setupRecyclerView(randomData, R.id.recyclerView)
+            var mRecyclerView = setupRecyclerView(randomData)
             return mRecyclerView
-        }
-
-    private val tvData: TextView
-    get() {
-        var tvData = findViewById(R.id.tvData)as TextView
-        return tvData
-    }
-
-    private val seekBarQuantity: SeekBar
-        get() {
-            var seekBar = findViewById(R.id.seekBarQuantity) as SeekBar
-            seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    if (progress > 0) {
-                        tvData.text=maxItems.toString()
-                        randomDataNUpdateUi(mRecyclerView)
-                        maxItems = progress
-                    }
-                }
-            })
-            return seekBar
-        }
-
-    private val seekBarSpeed: SeekBar
-        get() {
-            var seekBar = findViewById(R.id.seekBarSpeed) as SeekBar
-            seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    delay = getDelayFromSeekBar()
-                }
-            })
-            return seekBar
         }
 
     private fun getDelayFromSeekBar() = Math.abs(1000 - (seekBarSpeed.progress * 9.9)).toLong()
@@ -99,8 +78,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     private fun setupBtns(mRecyclerView: RecyclerView, shakeAnim: Animation?) {
-        var btnRandom = findViewById(R.id.btnRandom) as Button
-
         btnRandom.setOnClickListener {
             randomDataNUpdateUi(mRecyclerView)
         }
@@ -118,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         randomData = initRandomArray(maxItems, maxItems)
         mRecyclerView.adapter = SortAdapter(maxItems, randomData, this)
         btnSort.text = SORT_TEXT
-
+        btnSort.isEnabled=true
         tvSwap.text = "0"
         tvTotal.text="0"
         tvUiPing.text="0"
@@ -127,8 +104,7 @@ class MainActivity : AppCompatActivity() {
         tvCmp.text="0"
     }
 
-    private fun setupRecyclerView(array: ArrayList<Int>, recyclerViewId: Int): RecyclerView {
-        var recyclerView = findViewById(recyclerViewId) as RecyclerView
+    private fun setupRecyclerView(array: ArrayList<Int>): RecyclerView {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
         var sortAdapter: SortAdapter
@@ -219,6 +195,7 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 mRecyclerView.adapter.notifyDataSetChanged()
                 btnSort.text = SORTED_TEXT
+                btnSort.isEnabled=false
                 tvSwap.text = swapCount.toString()
                 tvTotal.text=(cmpCount+swapCount).toString()
                 tvUiPing.text=uiPing.toString()
