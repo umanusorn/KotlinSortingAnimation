@@ -70,7 +70,7 @@
         tools:layout_constraintLeft_creator="1">
 
         <SeekBar
-            android:id="@+id/seekBar"
+            android:id="@+id/seekBarSpeed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="35dp"
@@ -93,7 +93,7 @@
             android:layout_marginStart="16dp"
             android:text="Slow"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/seekBar"/>
+            app:layout_constraintTop_toTopOf="@+id/seekBarSpeed"/>
 
         <TextView
             android:id="@+id/tvFast"
@@ -159,46 +159,48 @@
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/gridLayout">
-
         <TextView
-            android:text="Access"
+            android:text="Data"
             style="@style/tv_in_grid"
-            android:id="@+id/textView13"
             android:layout_row="0"
             android:layout_column="0"/>
         <TextView
+            android:text="Access"
+            style="@style/tv_in_grid"
+            android:layout_row="0"/>
+        <TextView
             android:text="Compare"
-            android:id="@+id/textView14"
             android:layout_row="0"
-            android:layout_column="1"
             style="@style/tv_in_grid"/>
         <TextView
             android:text="Swap"
             style="@style/tv_in_grid"
-            android:id="@+id/textView15"
-            android:layout_row="0"
-            android:layout_column="2"/>
+            android:layout_row="0"/>
         <TextView
             android:text="Total"
             style="@style/tv_in_grid"
-            android:id="@+id/textView16"
-            android:layout_row="0"
-            android:layout_column="3"/>
+            android:layout_row="0"/>
 
         <TextView
             android:text="Mem"
             style="@style/tv_in_grid"
-
-            android:id="@+id/textView17"
-            android:layout_row="0"
-            android:layout_column="4"/>
-
+            android:layout_row="0"/>
+        <TextView
+            android:text="UiPing"
+            style="@style/tv_in_grid"
+            android:layout_row="0"/>
+        <TextView
+            android:text="0"
+            style="@style/tv_in_grid"
+            android:id="@+id/tvData"
+            android:layout_row="1"
+            android:layout_column="0"
+            />
         <TextView
             android:text="0"
             style="@style/tv_in_grid"
             android:id="@+id/tvAccess"
-            android:layout_row="1"
-            android:layout_column="0"/>
+            android:layout_row="1"/>
 
         <TextView
             android:text="0"
@@ -219,8 +221,10 @@
             android:text="0"
             style="@style/tv_in_grid"
             android:id="@+id/tvMem"/>
-
-
+        <TextView
+            android:text="0"
+            style="@style/tv_in_grid"
+            android:id="@+id/tvPing"/>
     </GridLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -88,7 +88,7 @@ fi
 if [ "$cygwin" = "false" -mItems "$darwin" = "false" ] ; then
     MAX_FD_LIMIT=`ulimit -H -n`
     if [ $? -eq 0 ] ; then
-        if [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "MAX_ITEMS" ] ; then
+        if [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "maxItems" ] ; then
             MAX_FD="$MAX_FD_LIMIT"
         fi
         ulimit -n $MAX_FD

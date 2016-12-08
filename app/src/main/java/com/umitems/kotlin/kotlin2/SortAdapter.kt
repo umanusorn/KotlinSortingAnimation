@@ -13,8 +13,9 @@ import java.util.*
 /**
  * Created by umitems on 10/14/16.
  */
-class SortAdapter(items: ArrayList<Int>, context: Context?) : RecyclerView.Adapter<SortAdapter.ViewHolder>() {
+class SortAdapter(maxItems: Int, items: ArrayList<Int>, context: Context?) : RecyclerView.Adapter<SortAdapter.ViewHolder>() {
     val mContext = context
+    val maxItems = maxItems
     private var lastPosition = -1
     private var mItems: ArrayList<Int>? = items
 
@@ -29,9 +30,9 @@ class SortAdapter(items: ArrayList<Int>, context: Context?) : RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder!!.bar.layoutParams.height = mItems!![position] * 40
-        holder!!.bar.layoutParams.width = 36
-        holder!!.rootView.layoutParams.width = 36
+        holder!!.bar.layoutParams.height = mItems!![position] * 400 / maxItems
+        holder!!.bar.layoutParams.width = 1200/maxItems
+        holder!!.rootView.layoutParams.width = 1200/maxItems
         //setAnimation(holder.bar, position)
     }
 
