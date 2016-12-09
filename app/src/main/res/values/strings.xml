@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">KotlinSortingAnimation</string>
+    <string name="insertion_sort">Insertion Sort</string>
+    <string name="bubble_sort">Bubble Sort</string>
+    <string name="selection_sort">Selection Sort</string>
+    <string-array name="sort_list">
+        <item>@string/bubble_sort</item>
+        <item>@string/insertion_sort</item>
+        <item>@string/selection_sort</item>
+
+    </string-array>
 </resources>

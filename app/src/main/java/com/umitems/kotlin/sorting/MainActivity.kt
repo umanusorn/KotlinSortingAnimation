@@ -1,5 +1,6 @@
 package com.umitems.kotlin.sorting
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -17,23 +18,23 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     var delay = 0.toLong()
-    var random: Random = Random()
-    var maxItems = 29
-    var randomData = initRandomArray(maxItems, maxItems)
+    var dataCount = 20
     val SORT_TEXT = "Sort"
     val SORTED_TEXT = "Sorted"
     val SORTING_TEXT = "Sorting"
+    var random: Random = Random()
+    var randomData = initRandomArray(dataCount, dataCount)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tvData.text = maxItems.toString()
-
-        random.setSeed(Math.random().toLong())//change random seed?
         val shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake)
-
+        random.setSeed(Math.random().toLong())//change random seed?
         setupBtns(mRecyclerView, shakeAnim)
         delay = getDelayFromSeekBar() // initSeekBar and set delay
+        tvData.text = getDataCount()
+
+        seekBarQuantity.progress = dataCount
         seekBarSpeed.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
@@ -47,19 +48,27 @@ class MainActivity : AppCompatActivity() {
         })
         seekBarQuantity.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                tvData.text = getDataCount()
             }
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                tvData.text = getDataCount()
             }
-
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (progress > 0) {
-                    tvData.text = maxItems.toString()
-                    randomDataNUpdateUi(mRecyclerView)
-                    maxItems = progress
+                    tvData.text = getDataCount()
+                    initDataNResetUi(mRecyclerView)
+                    dataCount = progress
                 }
             }
         })
+    }
+
+    private fun getDataCount(): String {
+        var data = dataCount.toString()
+        if (dataCount < 10)
+            data = "0" + data
+        return "Data: " + data
+
     }
 
     //todo may need to hide seekBarQuantity when sorting. Its gonna be hard/fun to sorting and adjusting quantity of data
@@ -71,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             val arrayList: ArrayList<Int> = randomData.let { intList ->
                 ArrayList<Int>(intList.size).apply { intList.forEach { add(it) } }
             }
-            sortAdapter = SortAdapter(maxItems, arrayList, this)
+            sortAdapter = SortAdapter(dataCount, arrayList, this)
             recyclerView.adapter = sortAdapter
 
             val callback = RecyclerItemTouchHelper(sortAdapter)
@@ -84,21 +93,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupBtns(mRecyclerView: RecyclerView, shakeAnim: Animation?) {
         btnRandom.setOnClickListener {
-            randomDataNUpdateUi(mRecyclerView)
+            initDataNResetUi(mRecyclerView)
         }
         btnSort.text = SORT_TEXT
         btnSort.startAnimation(shakeAnim)
         btnSort.setOnClickListener {
             it as Button
             it.text = SORTED_TEXT
+            it.isEnabled = false
             System.out.println("Before: " + randomData)
             bubbleSort(randomData, mRecyclerView)
         }
     }
 
-    private fun randomDataNUpdateUi(mRecyclerView: RecyclerView) {
-        randomData = initRandomArray(maxItems, maxItems)
-        mRecyclerView.adapter = SortAdapter(maxItems, randomData, this)
+    private fun initDataNResetUi(mRecyclerView: RecyclerView) {
+        randomData = initRandomArray(dataCount, dataCount)
+        mRecyclerView.adapter = SortAdapter(dataCount, randomData, this)
+        tvUiPing.setTextColor(Color.BLACK)
         btnSort.text = SORT_TEXT
         btnSort.isEnabled = true
         tvUiPing.text = "0"
@@ -129,17 +140,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun bubbleSort(mItems: ArrayList<Int>, mRecyclerView: RecyclerView): ArrayList<Int> {
-        mRecyclerView.adapter = SortAdapter(maxItems, mItems, this)
+        mRecyclerView.adapter = SortAdapter(dataCount, mItems, this)
+        btnSort.text = SORTING_TEXT
+        var uiPing = 0.toLong()
+        tvBigO.text = "n^2"
+        var swapCount = 0
+        var cmpCount = 0
         var i = 0
         var k = 0
-        var cmpCount = 0
-        var swapCount = 0
-        var uiPing = 0.toLong()
 
-        tvBigO.text = "n^2"
         //todo How to bring back step while sorting? Or just let user choose to auto sort or steping sort
         //todo add specific color the swap,access,mem
-        btnSort.text = SORTING_TEXT
+
         val thread = Thread {
             while (i < mItems.size) {
                 k = 0
@@ -158,7 +170,6 @@ class MainActivity : AppCompatActivity() {
                         swapCount++
                         runOnUiThread {
                             //todo measure and add more delay for ui to render the screen
-
                             var calendar = Calendar.getInstance()
                             mRecyclerView.adapter.notifyItemChanged(k)
                             mRecyclerView.adapter.notifyItemChanged(k + 1)
@@ -169,6 +180,7 @@ class MainActivity : AppCompatActivity() {
                             if (timeDiff > 0) {
                                 uiPing += timeDiff
                                 tvUiPing.text = uiPing.toString()
+                                tvUiPing.setTextColor(Color.RED)
                             }
                         }
                     }
@@ -182,14 +194,14 @@ class MainActivity : AppCompatActivity() {
              * need to update the ui the the latest state since if the delay is too fast. The device cannot render ui in time.
              */
             runOnUiThread {
+                tvTotal.text = (cmpCount + swapCount).toString()
                 mRecyclerView.adapter.notifyDataSetChanged()
+                tvSwap.text = swapCount.toString()
+                tvUiPing.text = uiPing.toString()
+                tvCmp.text = cmpCount.toString()
                 btnSort.text = SORTED_TEXT
                 btnSort.isEnabled = false
-                tvSwap.text = swapCount.toString()
-                tvTotal.text = (cmpCount + swapCount).toString()
-                tvUiPing.text = uiPing.toString()
                 tvMem.text = "0"
-                tvCmp.text = cmpCount.toString()
             }
         }
         thread.start()
