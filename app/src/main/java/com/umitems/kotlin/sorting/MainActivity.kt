@@ -2,6 +2,7 @@ package com.umitems.kotlin.sorting
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         delay = getDelayFromSeekBar() // initSeekBar and set delay
         tvData.text = getDataCount()
 
+
         seekBarQuantity.progress = dataCount
         seekBarSpeed.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -50,9 +52,11 @@ class MainActivity : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 tvData.text = getDataCount()
             }
+
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 tvData.text = getDataCount()
             }
+
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (progress > 0) {
                     tvData.text = getDataCount()
@@ -104,6 +108,11 @@ class MainActivity : AppCompatActivity() {
             System.out.println("Before: " + randomData)
             bubbleSort(randomData, mRecyclerView)
         }
+
+        tvStep.setOnClickListener {
+            System.out.println("Before: " + randomData)
+            bubbleSortStep(randomData, mRecyclerView)
+        }
     }
 
     private fun initDataNResetUi(mRecyclerView: RecyclerView) {
@@ -139,6 +148,39 @@ class MainActivity : AppCompatActivity() {
         return array
     }
 
+
+    fun bubbleSortStep(mItems: ArrayList<Int>, mRecyclerView: RecyclerView): ArrayList<Int> {
+        //todo it seem that this func not work as I expected since it run through every loop in on click
+        val handler1 = Handler()
+        mRecyclerView.adapter = SortAdapter(dataCount, mItems, this)
+        var i = 0
+        var k = 0
+        while (i < mItems.size) {
+            k = 0
+            val delay = 1000
+            handler1.postDelayed({
+                while (k < mItems.size - 1) {
+                    Log.d("chkDelay", "k=" + k)
+                    if (mItems[k] < mItems[k + 1]) {
+                        val tmp = mItems[k]
+                        mItems[k] = mItems[k + 1]
+                        mItems[k + 1] = tmp
+                        mRecyclerView.adapter.notifyItemChanged(k)
+                        mRecyclerView.adapter.notifyItemChanged(k + 1)
+                    }
+                    k++
+                }
+
+            }, delay * i.toLong())
+            i++
+            Log.d("chkDelay", "i=" + i)
+        }
+        //mRecyclerView.adapter = SortAdapter(mItems, this)
+        return mItems.let { intList ->
+            ArrayList<Int>(intList.size).apply { intList.forEach { add(it) } }
+        }
+    }
+
     fun bubbleSort(mItems: ArrayList<Int>, mRecyclerView: RecyclerView): ArrayList<Int> {
         mRecyclerView.adapter = SortAdapter(dataCount, mItems, this)
         btnSort.text = SORTING_TEXT
@@ -168,21 +210,26 @@ class MainActivity : AppCompatActivity() {
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
                         swapCount++
-                        runOnUiThread {
-                            //todo measure and add more delay for ui to render the screen
-                            var calendar = Calendar.getInstance()
-                            mRecyclerView.adapter.notifyItemChanged(k)
-                            mRecyclerView.adapter.notifyItemChanged(k + 1)
-                            var calendar2 = Calendar.getInstance()
-                            tvSwap.text = swapCount.toString()
-                            tvMem.text = "1"
-                            timeDiff = calendar2.timeInMillis - calendar.timeInMillis
-                            if (timeDiff > 0) {
-                                uiPing += timeDiff
-                                tvUiPing.text = uiPing.toString()
-                                tvUiPing.setTextColor(Color.RED)
-                            }
-                        }
+                       //synchronized(this){
+                           runOnUiThread {
+
+                               //todo measure and add more delay for ui to render the screen
+                               var calendar = Calendar.getInstance()
+                               mRecyclerView.adapter.notifyItemChanged(k)
+                               mRecyclerView.adapter.notifyItemChanged(k + 1)
+                               var calendar2 = Calendar.getInstance()
+                               tvSwap.text = swapCount.toString()
+                               tvMem.text = "1"
+                               timeDiff = calendar2.timeInMillis - calendar.timeInMillis
+                               if (timeDiff > 0) {
+                                   uiPing += timeDiff
+                                   tvUiPing.text = uiPing.toString()
+                                   tvUiPing.setTextColor(Color.RED)
+                               }
+
+                           }
+                       //}
+
                     }
                     sleep(delay + timeDiff)
                     k++
