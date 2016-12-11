@@ -210,26 +210,25 @@ class MainActivity : AppCompatActivity() {
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
                         swapCount++
-                       //synchronized(this){
-                           runOnUiThread {
 
-                               //todo measure and add more delay for ui to render the screen
-                               var calendar = Calendar.getInstance()
-                               mRecyclerView.adapter.notifyItemChanged(k)
-                               mRecyclerView.adapter.notifyItemChanged(k + 1)
-                               var calendar2 = Calendar.getInstance()
-                               tvSwap.text = swapCount.toString()
-                               tvMem.text = "1"
-                               timeDiff = calendar2.timeInMillis - calendar.timeInMillis
-                               if (timeDiff > 0) {
-                                   uiPing += timeDiff
-                                   tvUiPing.text = uiPing.toString()
-                                   tvUiPing.setTextColor(Color.RED)
-                               }
-
-                           }
-                       //}
-
+                        val actionRunnable = BlockingOnUIRunnable(this, BlockingOnUIRunnableListener { // Execute your activity code here
+                            //runOnUiThread {
+                                //todo measure and add more delay for ui to render the screen
+                                var calendar = Calendar.getInstance()
+                                mRecyclerView.adapter.notifyItemChanged(k)
+                                mRecyclerView.adapter.notifyItemChanged(k + 1)
+                                var calendar2 = Calendar.getInstance()
+                                tvSwap.text = swapCount.toString()
+                                tvMem.text = "1"
+                                timeDiff = calendar2.timeInMillis - calendar.timeInMillis
+                                if (timeDiff > 0) {
+                                    uiPing += timeDiff
+                                    tvUiPing.text = uiPing.toString()
+                                    tvUiPing.setTextColor(Color.RED)
+                                }
+                            //}
+                        })
+                        actionRunnable.startOnUiAndWait()
                     }
                     sleep(delay + timeDiff)
                     k++
