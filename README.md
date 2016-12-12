@@ -26,4 +26,9 @@ My idea is to compare the sorting and how each sort behave.
 
  Welcome for the suggestion on my code.
 
+![Alt text](https://monosnap.com/file/SYaHYqgU7RswIENRK48tSzuiZmPMw2.png)
+
+![Alt text](https://monosnap.com/file/J86RLBTQs06cqVUC6CfTqseddevFvX.png)
+
+![Alt text](https://monosnap.com/file/DPMCpULPFtrb4hOBcGNQ4tl7rFxivq.png)
 
