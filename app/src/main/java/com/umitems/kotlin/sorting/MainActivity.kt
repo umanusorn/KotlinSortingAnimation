@@ -18,23 +18,23 @@ import java.lang.Thread.sleep
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    var delay = 0.toLong()
+    var delay = 0L
     var dataCount = 20
     val SORT_TEXT = "Sort"
     val SORTED_TEXT = "Sorted"
     val SORTING_TEXT = "Sorting"
     var random: Random = Random()
-    var randomData = initRandomArray(dataCount, dataCount)
+    var mItems = initRandomArray(dataCount, dataCount)
+    lateinit var mRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake)
-        random.setSeed(Math.random().toLong())//change random seed?
-        setupBtns(mRecyclerView, shakeAnim)
+        mRecyclerView = initRecyclerView()
+        setupBtns(shakeAnim)
         delay = getDelayFromSeekBar() // initSeekBar and set delay
         tvData.text = getDataCount()
-
 
         seekBarQuantity.progress = dataCount
         seekBarSpeed.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
@@ -76,26 +76,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     //todo may need to hide seekBarQuantity when sorting. Its gonna be hard/fun to sorting and adjusting quantity of data
-    private val mRecyclerView: RecyclerView
-        get() {
-            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.layoutManager = layoutManager
-            var sortAdapter: SortAdapter
-            val arrayList: ArrayList<Int> = randomData.let { intList ->
-                ArrayList<Int>(intList.size).apply { intList.forEach { add(it) } }
-            }
-            sortAdapter = SortAdapter(dataCount, arrayList, this)
-            recyclerView.adapter = sortAdapter
+    private fun initRecyclerView(): RecyclerView {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = layoutManager
+        var sortAdapter = SortAdapter(mItems, this)
+        recyclerView.adapter = sortAdapter
 
-            val callback = RecyclerItemTouchHelper(sortAdapter)
-            val helper = ItemTouchHelper(callback)
-            helper.attachToRecyclerView(recyclerView)
-            return recyclerView
-        }
+        // TODO: What are these for?
+//            val callback = RecyclerItemTouchHelper(sortAdapter)
+//            val helper = ItemTouchHelper(callback)
+//            helper.attachToRecyclerView(recyclerView)
+        return recyclerView
+    }
 
     private fun getDelayFromSeekBar() = Math.abs(1000 - (seekBarSpeed.progress * 9.9)).toLong()
 
-    private fun setupBtns(mRecyclerView: RecyclerView, shakeAnim: Animation?) {
+    private fun setupBtns(shakeAnim: Animation?) {
         btnRandom.setOnClickListener {
             initDataNResetUi(mRecyclerView)
         }
@@ -105,19 +101,19 @@ class MainActivity : AppCompatActivity() {
             it as Button
             it.text = SORTED_TEXT
             it.isEnabled = false
-            System.out.println("Before: " + randomData)
-            bubbleSort(randomData, mRecyclerView)
+            System.out.println("Before: " + mItems)
+            bubbleSort()
         }
 
         tvStep.setOnClickListener {
-            System.out.println("Before: " + randomData)
-            bubbleSortStep(randomData, mRecyclerView)
+            System.out.println("Before: " + mItems)
+            bubbleSortStep()
         }
     }
 
     private fun initDataNResetUi(mRecyclerView: RecyclerView) {
-        randomData = initRandomArray(dataCount, dataCount)
-        mRecyclerView.adapter = SortAdapter(dataCount, randomData, this)
+        mItems = initRandomArray(dataCount, dataCount)
+        mRecyclerView.adapter = SortAdapter(mItems, this)
         tvUiPing.setTextColor(Color.BLACK)
         btnSort.text = SORT_TEXT
         btnSort.isEnabled = true
@@ -129,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         tvCmp.text = "0"
     }
 
-    private fun initRandomArray(max: Int, RANGE: Int): ArrayList<Int> {
+    private fun initRandomArray(max: Int, RANGE: Int): MutableList<Int> {
         var range = RANGE
         if (range < 2) {
             Log.e("range < 0", "range=$range range<2 may cause div by zero")
@@ -145,18 +141,16 @@ class MainActivity : AppCompatActivity() {
         }
         Log.d("New dataset:", array.toString())
 
-        return array
+        return Collections.synchronizedList(array)
     }
 
 
-    fun bubbleSortStep(mItems: ArrayList<Int>, mRecyclerView: RecyclerView): ArrayList<Int> {
+    fun bubbleSortStep() {
         //todo it seem that this func not work as I expected since it run through every loop in on click
         val handler1 = Handler()
-        mRecyclerView.adapter = SortAdapter(dataCount, mItems, this)
         var i = 0
-        var k = 0
         while (i < mItems.size) {
-            k = 0
+            var k = 0
             val delay = 1000
             handler1.postDelayed({
                 while (k < mItems.size - 1) {
@@ -165,8 +159,8 @@ class MainActivity : AppCompatActivity() {
                         val tmp = mItems[k]
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
-                        mRecyclerView.adapter.notifyItemChanged(k)
-                        mRecyclerView.adapter.notifyItemChanged(k + 1)
+                        // TODO: Find out why notifyItemChanged results in incorrect animation
+                        mRecyclerView.adapter.notifyDataSetChanged()
                     }
                     k++
                 }
@@ -175,30 +169,23 @@ class MainActivity : AppCompatActivity() {
             i++
             Log.d("chkDelay", "i=" + i)
         }
-        //mRecyclerView.adapter = SortAdapter(mItems, this)
-        return mItems.let { intList ->
-            ArrayList<Int>(intList.size).apply { intList.forEach { add(it) } }
-        }
     }
 
-    fun bubbleSort(mItems: ArrayList<Int>, mRecyclerView: RecyclerView): ArrayList<Int> {
-        mRecyclerView.adapter = SortAdapter(dataCount, mItems, this)
+    fun bubbleSort() {
         btnSort.text = SORTING_TEXT
-        var uiPing = 0.toLong()
+        var uiPing = 0L
         tvBigO.text = "n^2"
         var swapCount = 0
         var cmpCount = 0
         var i = 0
-        var k = 0
 
         //todo How to bring back step while sorting? Or just let user choose to auto sort or steping sort
         //todo add specific color the swap,access,mem
 
         val thread = Thread {
             while (i < mItems.size) {
-                k = 0
+                var k = 0
                 while (k < mItems.size - 1) {
-                    var timeDiff = 0.toLong()
                     cmpCount += 2
                     runOnUiThread {
                         tvTotal.text = (cmpCount + swapCount).toString()
@@ -210,15 +197,14 @@ class MainActivity : AppCompatActivity() {
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
                         swapCount++
-                        val actionRunnable = BlockingOnUIRunnable(this, BlockingOnUIRunnableListener { // Execute your activity code here
+                        val actionRunnable = BlockingOnUIRunnable(this, {
                                 //todo measure and add more delay for ui to render the screen
-                                var calendar = Calendar.getInstance()
-                                mRecyclerView.adapter.notifyItemChanged(k)
-                                mRecyclerView.adapter.notifyItemChanged(k + 1)
-                                var calendar2 = Calendar.getInstance()
+                                var start = System.currentTimeMillis()
+                                // TODO: Find out why notifyItemChanged results in incorrect animation
+                                mRecyclerView.adapter.notifyDataSetChanged()
                                 tvSwap.text = swapCount.toString()
                                 tvMem.text = "1"
-                                timeDiff = calendar2.timeInMillis - calendar.timeInMillis
+                                var timeDiff = System.currentTimeMillis() - start
                                 if (timeDiff > 0) {
                                     uiPing += timeDiff
                                     tvUiPing.text = uiPing.toString()
@@ -226,8 +212,11 @@ class MainActivity : AppCompatActivity() {
                                 }
                         })
                         actionRunnable.startOnUiAndWait()
+                    } else {
+                        // Ensure we take the same amount of time whether we swap or not
+                        BlockingOnUIRunnable(this, {}).startOnUiAndWait()
                     }
-                    sleep(delay + timeDiff)
+                    sleep(delay)
                     k++
                 }
                 i++
@@ -248,9 +237,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
         thread.start()
-
-        return mItems.let { intList ->
-            ArrayList<Int>(intList.size).apply { intList.forEach { add(it) } }
-        }
     }
 }
