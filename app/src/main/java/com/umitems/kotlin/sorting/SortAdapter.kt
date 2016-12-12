@@ -29,7 +29,7 @@ class SortAdapter(items: MutableList<Int>, context: Context) : RecyclerView.Adap
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder!!.bar.layoutParams.height = mItems!![position] * 400 / mItems.size
+        holder!!.bar.layoutParams.height = mItems[position] * 400 / mItems.size
         holder.bar.layoutParams.width = 1200 / mItems.size
         holder.rootView.layoutParams.width = 1200 / mItems.size
         //setAnimation(holder.bar, position)
