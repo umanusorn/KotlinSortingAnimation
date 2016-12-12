@@ -13,8 +13,10 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.mother_bar.view.*
 import java.lang.Thread.sleep
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     var delay = 0L
@@ -192,28 +194,47 @@ class MainActivity : AppCompatActivity() {
                         tvMem.text = "0"
                     }
 
-                    /*mRecyclerView.viewTreeObserver.addOnGlobalLayoutListener {
-                        mRecyclerView.getChildAt(k).barBg.setImageDrawable(getDrawable(R.drawable.red_bar))
-                        mRecyclerView.getChildAt(k+1).barBg.setImageDrawable(getDrawable(R.drawable.red_bar))
-                    }*/
 
-                    if (mItems[k] < mItems[k + 1]) {
-                        val tmp = mItems[k]
-                        mItems[k] = mItems[k + 1]
-                        mItems[k + 1] = tmp
-                        swapCount++
-                        val actionRunnable = BlockingOnUIRunnable(this, {
-                                //todo measure and add more delay for ui to render the screen
-                                // TODO: Find out why notifyItemChanged results in incorrect animation
-                                mRecyclerView.adapter.notifyItemMoved(k,k+1)
-                                tvSwap.text = swapCount.toString()
-                                tvMem.text = "1"
-                        })
-                        actionRunnable.startOnUiAndWait()
-                    } else {
-                        // Ensure we take the same amount of time whether we swap or not
-                        BlockingOnUIRunnable(this, {}).startOnUiAndWait()
-                    }
+                    /*   val actionRunnable = BlockingOnUIRunnable(this, {
+
+                       })
+                       actionRunnable.startOnUiAndWait()*/
+                    val actionRunnable = BlockingOnUIRunnable(this, {
+
+                        mRecyclerView.viewTreeObserver.addOnGlobalLayoutListener {
+
+                            //todo hi-light the accessing bar
+
+                            val layoutManager = mRecyclerView.layoutManager as LinearLayoutManager
+                            val firstVisiblePosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                            val lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                            Log.d("chkPos", "k=$k firstVis=$firstVisiblePosition last=$lastVisiblePosition")
+                            if (k >= firstVisiblePosition && (k + 1) < lastVisiblePosition) {
+                                Log.d("chkPos", "set red")
+                                mRecyclerView.getChildAt(k).barBg.setImageDrawable(getDrawable(R.drawable.red_bar))
+                                try { //todo sometime app crash here getChildAt() return null
+                                    mRecyclerView.getChildAt(k + 1).barBg.setImageDrawable(getDrawable(R.drawable.red_bar))
+                                } catch (e: Exception) {
+                                    Log.e("setColor", e.toString())
+                                }
+                            }
+                        }
+
+                        if (mItems[k] < mItems[k + 1]) {
+                            val tmp = mItems[k]
+                            mItems[k] = mItems[k + 1]
+                            mItems[k + 1] = tmp
+                            swapCount++
+
+                            //todo measure and add more delay for ui to render the screen
+                            // TODO: Find out why notifyItemChanged results in incorrect animation
+                            mRecyclerView.adapter.notifyItemMoved(k, k + 1)
+                            tvSwap.text = swapCount.toString()
+                            tvMem.text = "1"
+
+                        }
+                    })
+                    actionRunnable.startOnUiAndWait()
                     sleep(delay)
                     k++
                 }
