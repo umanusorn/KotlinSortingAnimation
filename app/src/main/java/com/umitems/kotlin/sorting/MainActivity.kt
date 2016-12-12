@@ -159,7 +159,8 @@ class MainActivity : AppCompatActivity() {
                         val tmp = mItems[k]
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
-                        mRecyclerView.adapter.notifyItemRangeChanged(k, 2)
+                        // TODO: Find out why notifyItemChanged results in incorrect animation
+                        mRecyclerView.adapter.notifyDataSetChanged()
                     }
                     k++
                 }
@@ -199,7 +200,8 @@ class MainActivity : AppCompatActivity() {
                         val actionRunnable = BlockingOnUIRunnable(this, {
                                 //todo measure and add more delay for ui to render the screen
                                 var start = System.currentTimeMillis()
-                                mRecyclerView.adapter.notifyItemRangeChanged(k, 2)
+                                // TODO: Find out why notifyItemChanged results in incorrect animation
+                                mRecyclerView.adapter.notifyDataSetChanged()
                                 tvSwap.text = swapCount.toString()
                                 tvMem.text = "1"
                                 var timeDiff = System.currentTimeMillis() - start
