@@ -6,7 +6,6 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -192,6 +191,12 @@ class MainActivity : AppCompatActivity() {
                         tvCmp.text = cmpCount.toString()
                         tvMem.text = "0"
                     }
+
+                    /*mRecyclerView.viewTreeObserver.addOnGlobalLayoutListener {
+                        mRecyclerView.getChildAt(k).barBg.setImageDrawable(getDrawable(R.drawable.red_bar))
+                        mRecyclerView.getChildAt(k+1).barBg.setImageDrawable(getDrawable(R.drawable.red_bar))
+                    }*/
+
                     if (mItems[k] < mItems[k + 1]) {
                         val tmp = mItems[k]
                         mItems[k] = mItems[k + 1]
@@ -199,17 +204,10 @@ class MainActivity : AppCompatActivity() {
                         swapCount++
                         val actionRunnable = BlockingOnUIRunnable(this, {
                                 //todo measure and add more delay for ui to render the screen
-                                var start = System.currentTimeMillis()
                                 // TODO: Find out why notifyItemChanged results in incorrect animation
-                                mRecyclerView.adapter.notifyDataSetChanged()
+                                mRecyclerView.adapter.notifyItemMoved(k,k+1)
                                 tvSwap.text = swapCount.toString()
                                 tvMem.text = "1"
-                                var timeDiff = System.currentTimeMillis() - start
-                                if (timeDiff > 0) {
-                                    uiPing += timeDiff
-                                    tvUiPing.text = uiPing.toString()
-                                    tvUiPing.setTextColor(Color.RED)
-                                }
                         })
                         actionRunnable.startOnUiAndWait()
                     } else {
