@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity() {
                         mItems[k] = mItems[k + 1]
                         mItems[k + 1] = tmp
                         swapCount++
-                        val actionRunnable = BlockingOnUIRunnable(this, BlockingOnUIRunnableListener { // Execute your activity code here
+                        val actionRunnable = BlockingOnUIRunnable(this, {
                                 //todo measure and add more delay for ui to render the screen
                                 var calendar = Calendar.getInstance()
                                 mRecyclerView.adapter.notifyItemChanged(k)
@@ -226,8 +226,10 @@ class MainActivity : AppCompatActivity() {
                                 }
                         })
                         actionRunnable.startOnUiAndWait()
+                    } else {
+                        BlockingOnUIRunnable(this, {}).startOnUiAndWait()
                     }
-                    sleep(delay + timeDiff)
+                    sleep(delay)
                     k++
                 }
                 i++

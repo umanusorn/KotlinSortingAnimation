@@ -11,11 +11,12 @@ public class BlockingOnUIRunnable {
     private Activity activity;
 
     // Event Listener
-    private BlockingOnUIRunnableListener listener;
+    private Runnable listener;
 
     // UI runnable
     private Runnable uiRunnable;
 
+    private boolean ranUI;
 
     /**
      * Class initialization
@@ -23,7 +24,7 @@ public class BlockingOnUIRunnable {
      * @param activity Activity
      * @param listener Event listener
      */
-    public BlockingOnUIRunnable(Activity activity, BlockingOnUIRunnableListener listener) {
+    public BlockingOnUIRunnable(Activity activity, Runnable listener) {
         this.activity = activity;
         this.listener = listener;
 
@@ -31,9 +32,10 @@ public class BlockingOnUIRunnable {
             public void run() {
                 // Execute custom code
                 if (BlockingOnUIRunnable.this.listener != null)
-                    BlockingOnUIRunnable.this.listener.onRunOnUIThread();
+                    BlockingOnUIRunnable.this.listener.run();
 
                 synchronized (this) {
+                    ranUI = true;
                     this.notify();
                 }
             }
@@ -50,10 +52,11 @@ public class BlockingOnUIRunnable {
             activity.runOnUiThread(uiRunnable);
 
             // Wait until runnable finished
-            try {
-                uiRunnable.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while (!ranUI) {
+                try {
+                    uiRunnable.wait();
+                } catch (InterruptedException e) {
+                }
             }
         }
     }
