@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import java.util.*
 
 
 /**
@@ -30,8 +29,8 @@ class SortAdapter(items: MutableList<Int>, context: Context) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder!!.bar.layoutParams.height = mItems[position] * 400 / mItems.size
-        holder.bar.layoutParams.width = 1200 / mItems.size
-        holder.rootView.layoutParams.width = 1200 / mItems.size
+        holder.bar.layoutParams.width = 900 / mItems.size
+        holder.rootView.layoutParams.width = 900 / mItems.size
         //setAnimation(holder.bar, position)
     }
 
@@ -52,17 +51,5 @@ class SortAdapter(items: MutableList<Int>, context: Context) : RecyclerView.Adap
 
     override fun getItemCount(): Int {
         return mItems.size
-    }
-
-    fun onMove(recyclerView: RecyclerView, firstPos: Int, secondPos: Int) {
-        /*Do your stuff what you want
-          Notify your adapter about change in positions using notifyItemMoved method
-          Shift element e.g. insertion sort*/
-        // setAnimation(recyclerView.findViewHolderForAdapterPosition(firstPos).itemView,secondPos)
-    }
-
-    fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        /*Do your stuff what you want
-          Swap element e.g. bubbleSort*/
     }
 }
