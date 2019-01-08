@@ -1,5 +1,7 @@
 # KotlinSortingAnimation
 
+[![Build Status](https://travis-ci.com/umanusorn/KotlinSortingAnimation.svg?branch=master)](https://travis-ci.com/umanusorn/KotlinSortingAnimation)
+
 This project aims to practice Kotlin. The project will do sorting on Android with animation and sound like this youtube 
 
 https://www.youtube.com/watch?v=kPRA0W1kECg
