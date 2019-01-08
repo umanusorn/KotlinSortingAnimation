@@ -6,4 +6,5 @@ package com.umitems.kotlin.sorting
 // place to convert Java 2 Kotlin
 
 class TestConvertJava2Kotlin {
+
 }

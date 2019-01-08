@@ -6,7 +6,6 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -14,8 +13,10 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.mother_bar.view.*
 import java.lang.Thread.sleep
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     var delay = 0L
@@ -171,51 +172,83 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    internal var k =0 // make it static since k in mRecyclerView.viewTreeObserver.addOnGlobalLayoutListener is not equal k in thread
+    internal var swapCount = 0
+    internal var cmpCount = 0
+    internal var i = 0
     fun bubbleSort() {
         btnSort.text = SORTING_TEXT
         var uiPing = 0L
         tvBigO.text = "n^2"
-        var swapCount = 0
-        var cmpCount = 0
-        var i = 0
-
         //todo How to bring back step while sorting? Or just let user choose to auto sort or steping sort
         //todo add specific color the swap,access,mem
-
+        i=0
+        swapCount = 0
+        cmpCount = 0
         val thread = Thread {
             while (i < mItems.size) {
-                var k = 0
+                k=0
                 while (k < mItems.size - 1) {
                     cmpCount += 2
-                    runOnUiThread {
+                    val actionRunnable = BlockingOnUIRunnable(this, {
+                        val layoutManager = mRecyclerView.layoutManager as LinearLayoutManager
+                        val firstVisiblePos = layoutManager.findFirstCompletelyVisibleItemPosition()
+                        val lastVisiblePos = layoutManager.findLastCompletelyVisibleItemPosition()
+                        //todo find out why this log has been call
+                        Log.d("chkPos", "k=$k firstVis=$firstVisiblePos last=$lastVisiblePos i=$i")
+
                         tvTotal.text = (cmpCount + swapCount).toString()
                         tvCmp.text = cmpCount.toString()
                         tvMem.text = "0"
-                    }
-                    if (mItems[k] < mItems[k + 1]) {
-                        val tmp = mItems[k]
-                        mItems[k] = mItems[k + 1]
-                        mItems[k + 1] = tmp
-                        swapCount++
-                        val actionRunnable = BlockingOnUIRunnable(this, {
-                                //todo measure and add more delay for ui to render the screen
-                                var start = System.currentTimeMillis()
-                                // TODO: Find out why notifyItemChanged results in incorrect animation
-                                mRecyclerView.adapter.notifyDataSetChanged()
-                                tvSwap.text = swapCount.toString()
-                                tvMem.text = "1"
-                                var timeDiff = System.currentTimeMillis() - start
-                                if (timeDiff > 0) {
-                                    uiPing += timeDiff
-                                    tvUiPing.text = uiPing.toString()
-                                    tvUiPing.setTextColor(Color.RED)
+                        //todo hi-light the accessing bar
+                        Log.d("chkPos", "set red")
+                        mRecyclerView.viewTreeObserver.addOnGlobalLayoutListener {
+                            if (k >= firstVisiblePos && (k+1) <= lastVisiblePos) {
+                                Log.d("chkPos", "in viewTreeObserver k=$k firstVis=$firstVisiblePos last=$lastVisiblePos i=$i")
+
+                                try { //todo sometime app crash here getChildAt() return null
+                                    mRecyclerView.getChildAt(k).barBg.setImageDrawable(getDrawable(R.drawable.red_bar))
+                                    mRecyclerView.getChildAt(k + 1).barBg.setImageDrawable(getDrawable(R.drawable.red_bar))
+
+                                } catch (e: NullPointerException) {
+                                    Log.e("setColor","setRed Accessing items"+ e.toString())
                                 }
-                        })
-                        actionRunnable.startOnUiAndWait()
-                    } else {
-                        // Ensure we take the same amount of time whether we swap or not
-                        BlockingOnUIRunnable(this, {}).startOnUiAndWait()
-                    }
+
+                                try {
+                                    mRecyclerView.getChildAt(k - 1).barBg.setImageDrawable(getDrawable(R.drawable.bar))
+                                    mRecyclerView.getChildAt(k - 2).barBg.setImageDrawable(getDrawable(R.drawable.bar))
+                                } catch (e: NullPointerException) {
+                                    Log.e("setColor"," set back to normal color"+ e.toString())
+                                }
+
+                                if (k == firstVisiblePos || k+1==firstVisiblePos)
+                                    try {
+                                        mRecyclerView.getChildAt(lastVisiblePos).barBg.setImageDrawable(getDrawable(R.drawable.bar))
+                                        mRecyclerView.getChildAt(lastVisiblePos - 1).barBg.setImageDrawable(getDrawable(R.drawable.bar))
+                                    } catch (e: NullPointerException) {
+                                        Log.e("setColor"," set back to normal color Case accessing First items"+ e.toString())
+                                    }
+                            }
+                        }
+
+                        if (mItems[k] < mItems[k + 1]) {
+                            val tmp = mItems[k]
+                            mItems[k] = mItems[k + 1]
+                            mItems[k + 1] = tmp
+                            swapCount++
+                            // TODO: Find out why notifyItemChanged results in incorrect animation
+
+
+                            mRecyclerView.adapter.notifyItemMoved(k, k + 1)
+                            tvSwap.text = swapCount.toString()
+                            tvMem.text = "1"
+                            mRecyclerView.viewTreeObserver.addOnGlobalLayoutListener {
+
+                            }
+                        }
+                    })
+                    actionRunnable.startOnUiAndWait()
                     sleep(delay)
                     k++
                 }
