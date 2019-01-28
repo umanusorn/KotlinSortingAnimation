@@ -1,7 +1,5 @@
 # KotlinSortingAnimation
 
-[![Build Status](https://travis-ci.com/umanusorn/KotlinSortingAnimation.svg?branch=master)](https://travis-ci.com/umanusorn/KotlinSortingAnimation)
-
 This project aims to practice Kotlin. The project will do sorting on Android with animation and sound like this youtube 
 
 https://www.youtube.com/watch?v=kPRA0W1kECg
@@ -34,10 +32,11 @@ My idea is to compare the sorting and how each sort behave.
  13. Use Firebase real-time db to compare phone performance with friends. Every player need to do sorting assignment. Everyone can see result of the other. The result will show which phone use lesser time to sort (I just want to try Firebase lol)
 
  Welcome for the suggestion on my code.
+ 
 
-![Alt text](https://monosnap.com/file/SYaHYqgU7RswIENRK48tSzuiZmPMw2.png)
+ ![Alt text](https://raw.githubusercontent.com/umanusorn/KotlinSortingAnimation/master/KotlinSortingAnimation02.png)
 
-![Alt text](https://monosnap.com/file/J86RLBTQs06cqVUC6CfTqseddevFvX.png)
+ ![Alt text](https://monosnap.com/file/J86RLBTQs06cqVUC6CfTqseddevFvX.png)
 
 ![Alt text](https://monosnap.com/file/DPMCpULPFtrb4hOBcGNQ4tl7rFxivq.png)
 
