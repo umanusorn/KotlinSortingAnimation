@@ -34,9 +34,9 @@ My idea is to compare the sorting and how each sort behave.
  Welcome for the suggestion on my code.
  
 
- ![Alt text](https://raw.githubusercontent.com/umanusorn/KotlinSortingAnimation/master/KotlinSortingAnimation02.png)
+ ![Alt text](https://raw.githubusercontent.com/umanusorn/KotlinSortingAnimation/master/KotlinSortingAnimation00.png)
 
- ![Alt text](https://monosnap.com/file/J86RLBTQs06cqVUC6CfTqseddevFvX.png)
+ ![Alt text](https://raw.githubusercontent.com/umanusorn/KotlinSortingAnimation/master/KotlinSortingAnimation01.png)
 
-![Alt text](https://monosnap.com/file/DPMCpULPFtrb4hOBcGNQ4tl7rFxivq.png)
+![Alt text](https://raw.githubusercontent.com/umanusorn/KotlinSortingAnimation/master/KotlinSortingAnimation02.png)
 
